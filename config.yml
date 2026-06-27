@@ -1,0 +1,324 @@
+# ===========================================
+# Custom Commands Plugin Configuration
+# ===========================================
+# Version: 1.1.3
+# 
+# This file contains all configuration options for the Custom Commands plugin.
+# You can create custom commands that players can use with custom messages,
+# permissions, cooldowns, and even clickable links!
+# ===========================================
+
+# Debug Settings
+# Controls the plugin's logging system for troubleshooting
+debug:
+  enabled: true          # Enable/disable debug mode (true/false)
+  console: true          # Show debug messages in server console (true/false)
+  file: true             # Write debug messages to log files (true/false)
+
+# ===========================================
+# Custom Commands Configuration
+# ===========================================
+# Here you can define your custom commands.
+# Each command can have permissions, aliases, cooldowns, and custom messages.
+# 
+# Syntax for clickable links: (Display Text)[<URL>]
+# Example: "Click here: (Discord)[<https://discord.gg/example>]"
+# ===========================================
+commands:
+  # Discord Command - Players can join your Discord server
+  discord:
+    permission: "customcommands.discord"  # Required permission to use this command
+    alias: ["dc"]                         # Alternative command names (players can use /dc instead of /discord)
+    description: "Join our Discord"       # Description shown in /help command
+    enabled: true                         # Enable/disable this command (true/false)
+    cooldown: 0                           # Cooldown in seconds (0 = no cooldown, 5 = 5 second wait)
+    subcommands:                          # Subcommands for tab completion (optional)
+      send:                               # /discord send
+        permission: "customcommands.discord.send"
+        message:
+          - "&6&l=== Discord Invite ==="
+          - "&eSending Discord invite to your DMs!"
+          - "&7Check your messages for the invite link."
+        commands:                         # Commands to execute (optional)
+          - "msg {player} &6Discord Server: &bhttps://discord.gg/2ZYGdwHqp"
+          - "tellraw {player} [\"\",{\"text\":\"Click here to join: \",\"color\":\"yellow\"},{\"text\":\"Discord Server\",\"color\":\"aqua\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://discord.gg/2qCMn6KHj4\"}}]"
+      invite:                             # /discord invite
+        permission: "customcommands.discord.invite"
+        message:
+          - "&6&l=== Discord Invite ==="
+          - "&eHere's your Discord invite:"
+          - "&7Click here: (Join Discord)[<https://discord.gg/2ZYGdwHqp>]"
+        commands:                         # Commands to execute (optional)
+          - "tellraw {player} [\"\",{\"text\":\"Discord Server: \",\"color\":\"gold\"},{\"text\":\"https://discord.gg/2ZYGdwHqp\",\"color\":\"aqua\",\"underlined\":true,\"clickEvent\":{\"action\":\"open_url\",\"value\":\"https://discord.gg/2qCMn6KHj4\"}}]"
+      help:                               # /discord help
+        permission: "customcommands.discord.help"
+    message:
+          - "&6&l=== Discord Help ==="
+          - "&eAvailable commands:"
+          - "&7/discord - Join our Discord"
+          - "&7/discord send - Send invite to DMs"
+          - "&7/discord invite - Show invite link"
+          - "&7/discord help - Show this help"
+    message:                              # Default message when no subcommand is used
+      - "&6&l=== Discord ==="            # Gold color (&6) + Bold (&l) = Gold bold text
+      - "&eJoin our Discord server!"     # Yellow color (&e)
+      - "&7Click here: (Discord)[<https://discord.gg/2ZYGdwHqp>]"  # Clickable link! (Gray text + clickable Discord link)
+      - "&7For support and updates"      # Gray color (&7)
+      - "&7Use &e/discord help &7for more options"  # Help hint
+  
+  # Website Command - Players can visit your website
+  website:
+    permission: "customcommands.website"  # Required permission to use this command
+    alias: ["web", "site"]                # Multiple aliases! Players can use /web, /site, or /website
+    description: "Visit our website"      # Description shown in /help command
+    enabled: true                         # Enable/disable this command (true/false)
+    cooldown: 5                           # 5 second cooldown (prevents spam)
+    message:                              # Messages sent when command is used
+      - "&a&lWebsite"                     # Green color (&a) + Bold (&l) = Green bold text
+      - "&7Visit our website: (Click here)[<https://axysmp.vercel.app/>]"  # Clickable website link (Gray text + clickable link)
+  
+  # Rules Command - Shows server rules to players
+  rules:
+    permission: "customcommands.rules"    # Required permission to use this command
+    alias: ["rule"]                       # Alternative command name (players can use /rule instead of /rules)
+    description: "Show server rules"      # Description shown in /help command
+    enabled: true                         # Enable/disable this command (true/false)
+    cooldown: 10                          # 10 second cooldown (prevents spam of rules)
+    message:                              # Messages sent when command is used (numbered list)
+      - "&c&lServer Rules"                # Red color (&c) + Bold (&l) = Red bold text
+      - "&75. Have fun!"                         # Gray color (&7) + numbered list
+
+  # Example Command with Console Commands - Demonstrates console command execution
+  example:
+    permission: "customcommands.example"  # Required permission to use this command
+    alias: ["ex", "demo"]                 # Alternative command names
+    description: "Example command with console execution"  # Description shown in /help command
+    enabled: true                         # Enable/disable this command (true/false)
+    cooldown: 5                           # 5 second cooldown
+    type: "Console"                       # Command execution type: "Console" (executed as console) or "Player" (executed as player)
+    commands:                            # Commands to execute (with variables!)
+      - "say {player} used the example command!"
+      - "tellraw @a [\"\",{\"text\":\"Player \",\"color\":\"yellow\"},{\"text\":\"{player}\",\"color\":\"green\"},{\"text\":\" is at \",\"color\":\"yellow\"},{\"text\":\"{x}, {y}, {z}\",\"color\":\"aqua\"},{\"text\":\" in \",\"color\":\"yellow\"},{\"text\":\"{world}\",\"color\":\"gold\"}]"
+      - "effect give {player} minecraft:glowing 10 1 true"
+      - "title {player} title [\"\",{\"text\":\"Example Command!\",\"color\":\"gold\"}]"
+      - "title {player} subtitle [\"\",{\"text\":\"You are at {x}, {y}, {z}\",\"color\":\"gray\"}]"
+    message:                              # Messages sent when command is used
+      - "&6&l=== Example Command ==="     # Gold color (&6) + Bold (&l) = Gold bold text
+      - "&eThis command demonstrates console command execution!"  # Yellow color (&e)
+      - "&7Check the console for executed commands!"  # Gray color (&7)
+      - "&7You should see a glowing effect and title!"  # Gray color (&7)
+
+  # Tellraw Command - Demonstrates Arguments Feature
+  tellraw:
+    permission: "customcommands.tellraw"
+    alias: ["tr", "raw"]
+    description: "Send a raw JSON message to yourself or others"
+    enabled: true
+    cooldown: 0
+    type: "Console"
+    arguments:                            # Arguments configuration
+      whitelist: []                       # Empty whitelist = any arguments allowed
+      whitelist-only: false               # Allow any arguments (not just whitelisted)
+      no-arguments: false                 # Arguments are required
+      invalid-message: "&cUsage: /tellraw <message>"
+    message:
+      - "&6&lTellraw Command"
+      - "&eMessage sent: &7{args}"
+    commands:                            # Use {args} in commands
+      - "tellraw {player} [\"\",{\"text\":\"[Tellraw] \",\"color\":\"gold\"},{\"text\":\"{args}\",\"color\":\"yellow\"}]"
+    subcommands:                         # Subcommands with arguments
+      broadcast:                          # /tellraw broadcast <message>
+        permission: "customcommands.tellraw.broadcast"
+        message:
+          - "&6&lBroadcasting message..."
+        arguments:
+          whitelist: []                   # Any message allowed
+          whitelist-only: false
+          no-arguments: false             # Message required
+          invalid-message: "&cUsage: /tellraw broadcast <message>"
+        commands:
+          - "tellraw @a [\"\",{\"text\":\"[Broadcast] \",\"color\":\"red\"},{\"text\":\"{args}\",\"color\":\"yellow\"}]"
+      player:                            # /tellraw player <player> <message>
+        permission: "customcommands.tellraw.player"
+        message:
+          - "&6&lSending message to player..."
+        arguments:
+          whitelist: []                   # Any arguments allowed (player name + message)
+          whitelist-only: false
+          no-arguments: false             # Arguments required
+          invalid-message: "&cUsage: /tellraw player <player> <message>"
+        commands:
+          - "tellraw {args} [\"\",{\"text\":\"[From {player}] \",\"color\":\"aqua\"},{\"text\":\"{args}\",\"color\":\"white\"}]"
+
+  # Admin Command - Demonstrates Nested Subcommands Feature
+  admin:
+    permission: "customcommands.admin"
+    alias: ["a", "adm"]
+    description: "Admin command with nested subcommands"
+    enabled: true
+    cooldown: 0
+    type: "Console"
+    message:
+      - "&c&l=== Admin Panel ==="
+      - "&7Use &e/admin help &7to see available commands"
+    subcommands:
+      player:                            # /admin player
+        permission: "customcommands.admin.player"
+        message:
+          - "&6&lPlayer Management"
+          - "&7Use &e/admin player help &7for more options"
+        subcommands:                     # Nested subcommands!
+          kick:                          # /admin player kick <player>
+            permission: "customcommands.admin.player.kick"
+            message:
+              - "&cKicking player: {args}"
+            arguments:
+              whitelist: []               # Any player name
+              whitelist-only: false
+              no-arguments: false         # Player name required
+              player-args: [0]            # First argument (index 0) must be a player name
+              invalid-message: "&cUsage: /admin player kick <player>"
+            commands:
+              - "kick {args} Kicked by {player}"
+          ban:                           # /admin player ban <player>
+            permission: "customcommands.admin.player.ban"
+            message:
+              - "&cBanning player: {args}"
+            arguments:
+              whitelist: []               # Any player name
+              whitelist-only: false
+              no-arguments: false         # Player name required
+              player-args: [0]            # First argument (index 0) must be a player name
+              invalid-message: "&cUsage: /admin player ban <player>"
+            commands:
+              - "ban {args} Banned by {player}"
+          teleport:                      # /admin player teleport <player> [target]
+            permission: "customcommands.admin.player.teleport"
+            message:
+              - "&6Teleporting player..."
+            arguments:
+              whitelist: []               # Player name and optional target
+              whitelist-only: false
+              no-arguments: false         # At least player name required
+              invalid-message: "&cUsage: /admin player teleport <player> [target]"
+            commands:
+              - "tp {args}"
+      server:                            # /admin server
+        permission: "customcommands.admin.server"
+        message:
+          - "&6&lServer Management"
+          - "&7Use &e/admin server help &7for more options"
+        subcommands:                     # More nested subcommands!
+          restart:                       # /admin server restart
+            permission: "customcommands.admin.server.restart"
+            message:
+              - "&c&lRestarting server in 10 seconds..."
+            commands:
+              - "say Server restarting in 10 seconds!"
+              - "schedule function minecraft:load 10s"
+          reload:                        # /admin server reload
+            permission: "customcommands.admin.server.reload"
+            message:
+              - "&eReloading server..."
+            commands:
+              - "reload"
+          broadcast:                     # /admin server broadcast <message>
+            permission: "customcommands.admin.server.broadcast"
+            message:
+              - "&6Broadcasting message..."
+            arguments:
+              whitelist: []               # Any message
+              whitelist-only: false
+              no-arguments: false         # Message required
+              invalid-message: "&cUsage: /admin server broadcast <message>"
+            commands:
+              - "say [Broadcast] {args}"
+      help:                              # /admin help
+        permission: "customcommands.admin.help"
+        message:
+          - "&6&l=== Admin Help ==="
+          - "&eAvailable commands:"
+          - "&7/admin player kick <player> - Kick a player"
+          - "&7/admin player ban <player> - Ban a player"
+          - "&7/admin player teleport <player> [target] - Teleport player"
+          - "&7/admin server restart - Restart the server"
+          - "&7/admin server reload - Reload the server"
+          - "&7/admin server broadcast <message> - Broadcast a message"
+          - "&7/admin help - Show this help"
+
+  # Home Command - Teleport back to the main base
+  home:
+    permission: "customcommands.home"
+    alias: ["h"]
+    description: "Teleport back to the main base"
+    enabled: true
+    cooldown: 3
+    type: "Console"
+    message:
+      - "&a&lTeleporting..."
+      - "&7Taking you back home!"
+    commands:
+      - "execute in minecraft:overworld run teleport {player}  -259.300 112 -29.7"
+
+# Cave Command - Teleport to the specific cave coordinates
+  cave:
+    permission: "customcommands.cave"
+    description: "Teleport to the cave"
+    enabled: true
+    cooldown: 3
+    type: "Console"
+    message:
+      - "&a&lTeleporting..."
+      - "&7Taking you to the cave!"
+    commands:
+      - "execute in minecraft:overworld run teleport {player} -200 -51 -282"
+
+  # Nether Command - Teleport to the nether portal coordinates in the overworld
+  nether:
+    permission: "customcommands.nether"
+    description: "Teleport to the nether area"
+    enabled: true
+    cooldown: 3
+    type: "Console"
+    message:
+      - "&a&lTeleporting..."
+      - "&7Taking you to the nether portal in the overworld!"
+    commands:
+      - "execute in minecraft:overworld run teleport {player} -245 73 16"
+
+  # farm Command - Teleport to the nether portal coordinates in the overworld
+  farm:
+    permission: "customcommands.farm"
+    description: "Teleport to the farm area"
+    enabled: true
+    cooldown: 3
+    type: "Console"
+    message:
+      - "&a&lTeleporting..."
+      - "&7Taking you to the farm in the overworld!"
+    commands:
+      - "execute in minecraft:overworld run teleport {player} -262 65 -68"
+
+  fortress_nether:
+    permission: "customcommands.netherfortress"
+    description: "Teleport to the nether fortress"
+    enabled: true
+    cooldown: 3
+    type: "Console"
+    message:
+      - "&a&lTeleporting..."
+      - "&7Taking you to the nether fortress in nether!"
+    commands:
+      - "execute in minecraft:the_nether run teleport {player} -78 68 137"
+
+  cave_nether:
+    permission: "customcommands.netherfortress"
+    description: "Teleport to the nether cave"
+    enabled: true
+    cooldown: 3
+    type: "Console"
+    message:
+      - "&a&lTeleporting..."
+      - "&7Taking you to the nether cave coordinates!"
+    commands:
+      - "execute in minecraft:the_nether run teleport {player} -116 38 38"

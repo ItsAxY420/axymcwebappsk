@@ -1,0 +1,62 @@
+# --- XP Tome Skript for Minecraft 26.1.2 ---
+
+on load:
+    # Set up the item and its description
+    set {_tome} to enchanted book named "&6&lXP Tome"
+    set line 1 of lore of {_tome} to "&7Stored XP: &a0"
+    set line 2 of lore of {_tome} to "&eShift-Right-Click&7 to deposit XP."
+    set line 3 of lore of {_tome} to "&eRight-Click&7 to withdraw XP."
+
+    # Register the Crafting Recipe
+    # Shape:
+    # Lapis  | Gold | Lapis
+    # Gold   | Book | Gold
+    # Lapis  | Gold | Lapis
+    register new shaped recipe for {_tome} using lapis lazuli, gold ingot, lapis lazuli, gold ingot, book, gold ingot, lapis lazuli, gold ingot, lapis lazuli with id "custom:xptome"
+
+on right click with enchanted book:
+    if colored name of player's tool is "&6&lXP Tome":
+        cancel event
+
+        # Read the current XP stored inside the lore
+        set {_lore::*} to lore of player's tool
+        set {_uncolored} to uncolored {_lore::1}
+        replace all "Stored XP: " with "" in {_uncolored}
+        set {_stored} to {_uncolored} parsed as integer
+
+        if {_stored} is not set:
+            set {_stored} to 0
+
+        if player is sneaking:
+            # --- DEPOSIT XP ---
+            set {_playerXP} to player's total experience
+
+            if {_playerXP} <= 0:
+                send "&cYou have no XP to deposit!" to player
+                stop
+
+            add {_playerXP} to {_stored}
+            set player's total experience to 0
+
+            set {_item} to player's tool
+            set line 1 of lore of {_item} to "&7Stored XP: &a%{_stored}%"
+            set player's tool to {_item}
+
+            send "&aDeposited all your XP into the Tome!" to player
+            play sound "entity.experience_orb.pickup" with volume 1 and pitch 1 at player
+
+        else:
+            # --- WITHDRAW XP ---
+            if {_stored} <= 0:
+                send "&cThis Tome is empty!" to player
+                stop
+
+            add {_stored} to player's total experience
+            set {_stored} to 0
+
+            set {_item} to player's tool
+            set line 1 of lore of {_item} to "&7Stored XP: &a0"
+            set player's tool to {_item}
+
+            send "&aWithdrew all XP from the Tome!" to player
+            play sound "entity.player.levelup" with volume 1 and pitch 1 at player

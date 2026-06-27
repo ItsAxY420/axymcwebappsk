@@ -1,0 +1,43 @@
+command /webinv:
+    trigger:
+        saveInventory(player)
+        send "&a[Web] Inventory Saved!"
+
+function saveInventory(p: player):
+    # Start with the player and the inventory array
+    set {_json} to "{""player"": ""%{_p}%"", ""inventory"": ["
+    set {_count} to 0
+    
+    loop 36 times:
+        set {_s} to loop-number - 1
+        set {_i} to slot {_s} of {_p}'s inventory
+        if {_i} is not air:
+            if {_count} > 0:
+                set {_json} to "%{_json}%,"
+            
+            # Extract Data
+            set {_name} to name of {_i}
+            if {_name} is not set:
+                set {_name} to "%type of {_i}%"
+            # Remove special characters that break JSON
+            replace all """" with "" in {_name}
+            
+            set {_enchs} to "%enchantments of {_i}%"
+            replace all """" with "" in {_enchs}
+            
+            set {_dur} to durability of {_i}
+            set {_max} to max durability of {_i}
+            
+            # Add to JSON string
+            set {_item} to "{""slot"": %{_s}%, ""item"": ""%type of {_i}%"", ""name"": ""%{_name}%"", ""amount"": %item amount of {_i}%, ""enchants"": ""%{_enchs}%"", ""dur"": %{_dur}%, ""max"": %{_max}%}"
+            set {_json} to "%{_json}%%{_item}%"
+            add 1 to {_count}
+            
+    set {_json} to "%{_json}%]}"
+    
+    # Save via your junction bridge
+    log "%{_json}%" to "webinventory/%{_p}%.log"
+
+every 1 minute:
+    loop all players:
+        saveInventory(loop-player)

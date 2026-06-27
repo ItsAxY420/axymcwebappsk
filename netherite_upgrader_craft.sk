@@ -1,0 +1,10 @@
+# --- custom_crafts.sk ---
+
+on load:
+    # Register the custom Netherite Sword upgrade recipe
+    # Pattern from image_bd70d8.png:
+    # Netherite Scrap | Diamond   | Netherite Scrap
+    # Gold Ingot      | Diamond   | Gold Ingot
+    # Gold Ingot      | Netherite Ingot | Gold Ingot
+    
+    register new shaped recipe for netherite_upgrade_smithing_template using netherite_scrap, diamond, netherite_scrap, gold_ingot, diamond, gold_ingot, gold_ingot, netherite_ingot, gold_ingot with id "custom:upgrade_netherite"

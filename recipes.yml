@@ -1,0 +1,194 @@
+# CustomCrafty Recipe Configuration
+# This file contains examples showcasing all supported NBT features
+
+
+
+# CustomCrafty Recipe Configuration
+# This file contains examples showcasing all supported NBT features
+
+recipes:
+  # Example 1: Ultimate Sword with all NBT features (ENDGAME HARDCORE RECIPE)
+  ultimate_sword:
+    name: Ultimate Enchanted Sword
+    type: SHAPED
+    exactMatch: true
+    preserveNBT: true
+    shape:
+    - NEN
+    - THT
+    - XBX
+    ingredients:
+      N:
+        material: NETHER_STAR
+        amount: 1
+      E:
+        material: ENCHANTED_GOLDEN_APPLE
+        amount: 1
+      T:
+        material: TOTEM_OF_UNDYING
+        amount: 1
+      H:
+        material: ENCHANTED_GOLDEN_APPLE
+        amount: 1
+        name: '&6Golden Head'
+      X:
+        material: NETHERITE_BLOCK
+        amount: 1
+      B:
+        material: BEACON
+        amount: 1
+    result:
+      material: DIAMOND_SWORD
+      amount: 1
+      name: '&bUltimate Sword of Legends'
+      lore:
+      - '&7Forged from the rarest artifacts in the world'
+      - '&7Unbreakable and unbelievably powerful'
+      - '&9+20 Attack Damage'
+      - '&a+5 Attack Speed'
+      enchantments:
+        sharpness: 10
+        unbreaking: 5
+        mending: 1
+        fire_aspect: 2
+        looting: 5
+        sweeping: 3
+      customModelData: 12345
+      unbreakable: true
+      hideFlags:
+      - HIDE_ENCHANTS
+      - HIDE_UNBREAKABLE
+      - HIDE_ATTRIBUTES
+      attributeModifiers:
+        damage_boost:
+          attribute: GENERIC_ATTACK_DAMAGE
+          amount: 20.0
+          operation: ADD_NUMBER
+          slot: HAND
+        speed_boost:
+          attribute: GENERIC_ATTACK_SPEED
+          amount: 5.0
+          operation: ADD_NUMBER
+          slot: HAND
+  
+  # Example 2: Custom Player Head
+  custom_player_head:
+    name: Custom Player Head
+    type: SHAPELESS
+    exactMatch: false
+    preserveNBT: false
+    shapelessIngredients:
+    - material: PLAYER_HEAD
+      amount: 1
+    - material: GOLD_INGOT
+      amount: 3
+    result:
+      material: PLAYER_HEAD
+      amount: 1
+      name: '&6Golden Player Head'
+      lore:
+      - '&7A rare collector''s item'
+      - '&7Shows the head of a famous player'
+      skullOwner: Notch
+      hideFlags: 32
+  
+  # Example 3: Custom Potion with Multiple Effects
+  super_potion:
+    name: Super Health Potion
+    type: SHAPED
+    exactMatch: false
+    preserveNBT: true
+    shape:
+    - ' G '
+    - GPG
+    - ' G '
+    ingredients:
+      G:
+        material: GOLD_INGOT
+        amount: 1
+      P:
+        material: POTION
+        amount: 1
+    result:
+      material: POTION
+      amount: 1
+      name: '&dSuper Health Potion'
+      lore:
+      - '&7A powerful potion with multiple effects'
+      - '&7Heals and regenerates the user'
+      potionColor: '#FF69B4'
+      potionEffects:
+        healing:
+          type: HEAL
+          duration: 1
+          amplifier: 2
+          ambient: false
+          particles: true
+          icon: true
+        regeneration:
+          type: REGENERATION
+          duration: 1200
+          amplifier: 1
+          ambient: false
+          particles: true
+          icon: true
+        speed:
+          type: SPEED
+          duration: 3600
+          amplifier: 0
+          ambient: false
+          particles: false
+          icon: true
+  
+  # Example 4: Numeric HideFlags Example (hides enchantments only)
+  hidden_enchanted_bow:
+    name: Mysterious Bow
+    type: SHAPED
+    exactMatch: false
+    preserveNBT: false
+    shape:
+    - ' SS'
+    - S S
+    - ' SS'
+    ingredients:
+      S:
+        material: STRING
+        amount: 1
+    result:
+      material: BOW
+      amount: 1
+      name: '&5Mysterious Bow'
+      lore:
+      - '&7A bow with hidden enchantments'
+      - '&7Its true power is concealed'
+      enchantments:
+        power: 10
+        punch: 3
+        flame: 1
+        infinity: 1
+        unbreaking: 5
+      hideFlags: 1 # Hides enchantments (binary: 00000001)
+  
+  # Custom Recipe: Golden Head (Using Player Head drops)
+  golden_head:
+    name: Golden Head Crafting
+    type: SHAPED
+    exactMatch: false
+    preserveNBT: false
+    shape:
+    - GGG
+    - GHG
+    - GGG
+    ingredients:
+      G:
+        material: GOLD_INGOT
+        amount: 1
+      H:
+        material: PLAYER_HEAD
+        amount: 1
+    result:
+      material: ENCHANTED_GOLDEN_APPLE
+      amount: 1
+      name: '&6Golden Head'
+      lore:
+      - '&7Forged from the head of a fallen player'
