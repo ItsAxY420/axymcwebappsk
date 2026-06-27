@@ -36,7 +36,7 @@ function saveInventory(p: player):
     set {_json} to "%{_json}%]}"
     
     # Save via your junction bridge
-    log "%{_json}%" to "AxyMCWebApp/web/webinventory/%{_p}%.log"
+    log "%{_json}%" to "web/webinventory/%{_p}%.log"
 
 every 1 minute:
     loop all players:
